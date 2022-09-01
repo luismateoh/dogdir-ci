@@ -12,10 +12,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: JFrog config 
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}   
+          
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
+          registry-url: ${{secrets.JF_REGISTRY}}
+          
+      - name: Node install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}  
       - uses: actions/cache@v2
         id: restore-install
         with:
