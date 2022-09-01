@@ -11,16 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      
+      - name: JFrog config 
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}   
+          
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - uses: actions/cache@v2
-        id: restore-install
-        with:
-          path: ./*
-          key: ${{ github.sha }}
+          registry-url: ${{secrets.JF_REGISTRY}}
+          
+      - name: Node install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} 
 
   test:
     name: Run Test
