@@ -12,12 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: JFrog config 
-        uses: jfrog/setup-jfrog-cli@v2
-        env:
-          JF_URL: ${{ secrets.JF_URL }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}   
           
       - uses: actions/setup-node@v3
         with:
@@ -88,8 +82,14 @@ jobs:
     needs: [build, scan]
     
     steps:
-
       - uses: actions/checkout@v2
+      
+      - name: JFrog config 
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}   
+          
       - uses: actions/setup-node@v1
         with:
           node-version: 16
