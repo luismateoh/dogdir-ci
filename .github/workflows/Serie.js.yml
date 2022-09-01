@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      
       - name: JFrog config 
         uses: jfrog/setup-jfrog-cli@v2
         env:
@@ -22,6 +23,11 @@ jobs:
         with:
           node-version: 16
           registry-url: ${{secrets.JF_REGISTRY}}
+          
+      - name: Node install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} 
           
       - name: Node install dependencies
         run: npm ci
