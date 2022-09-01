@@ -128,6 +128,10 @@ jobs:
         with:
           path: ./*
           key: ${{ github.sha }}
+      - run: ls
+      - run: npm run build
+      - run: ls
+      - run: echo "dot"
       - name: Deploy to Netlify  
         uses: nwtgck/actions-netlify@v1.2
         with:
