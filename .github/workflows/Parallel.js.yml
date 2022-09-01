@@ -22,6 +22,11 @@ jobs:
         run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} 
+      - uses: actions/cache@v2
+        id: restore-install
+        with:
+          path: ./*
+          key: ${{ github.sha }}
 
   test:
     name: Run Test
